@@ -23,7 +23,8 @@ export default function TaskList({ onNavigate }) {
     try {
       setLoading(true);
       const response = await getAllTasks({ page: pageNum, size: pageSize });
-      const items = response?.content || response?.data || [];
+      const rawItems = response?.content || response?.data || [];
+      const items = Array.isArray(rawItems) ? rawItems : [];
       setTasks(items);
       if (response?.totalPages) setTotalPages(response.totalPages);
       if (response?.page !== undefined) setPage(response.page);

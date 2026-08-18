@@ -115,21 +115,6 @@ const GenomicsPrecisionHub = lazy(() => import("../pages/genomics/GenomicsPrecis
 // reached them and every one of them rendered the 404 page. They are grouped here rather than
 // interleaved above because they were restored as a set, in one change, for one reason.
 const OphthalmologyVisionHub = lazy(() => import("../pages/ophthalmology/OphthalmologyVisionHub"));
-const BiomedicalAiDiagnosticsOverwatchPage = lazy(() => import("../pages/ai/BiomedicalAiDiagnosticsOverwatchPage"));
-const BloodBankHub = lazy(() => import("../pages/bloodbank/BloodBankHub"));
-const BloodBankTransfusionHub = lazy(() => import("../pages/bloodbank/BloodBankTransfusionHub"));
-const CardiologyCathLabHub = lazy(() => import("../pages/cardiology/CardiologyCathLabHub"));
-// The binding name has to match the file name character for character: scripts/check-routes.js
-// audits reachability by comparing the file stem under src/pages/ against the component bindings
-// this module renders, so `IcuTelemetryOverwatchHubPage` would leave the page reported as orphaned.
-const ICUTelemetryOverwatchHubPage = lazy(() => import("../pages/hospital/ICUTelemetryOverwatchHubPage"));
-const PathologyDigitalHub = lazy(() => import("../pages/pathology/PathologyDigitalHub"));
-const PatientEhrAnalyticsPredictivePage = lazy(() => import("../pages/patient/PatientEhrAnalyticsPredictivePage"));
-// DialysisRenalHub and SterileProcessingHub are deliberately absent from this block: both were
-// already imported above and then never referenced by a route, which is why they read as unused.
-// Re-declaring either here is a SyntaxError, not a duplicate-looking line.
-const BackendAuthenticationSecurityInfrastructurePage = lazy(() => import("../pages/auth/BackendAuthenticationSecurityInfrastructurePage"));
-const EnterpriseZeroTrustSecurityGovernancePage = lazy(() => import("../pages/auth/EnterpriseZeroTrustSecurityGovernancePage"));
 
 const AuthoritySecurityPage = lazy(() => import("../pages/auth/AuthoritySecurityPage"));
 const MfaSecurityPage = lazy(() => import("../pages/auth/MfaSecurityPage"));

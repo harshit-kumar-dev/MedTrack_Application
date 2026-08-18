@@ -47,3 +47,17 @@ it("navigates to update-task with the task ID string, not the whole task object"
   // task would be lost on reload.
   expect(onNavigate).not.toHaveBeenCalledWith("update-task", expect.any(Object));
 });
+
+it("does not crash and renders empty state if getAllTasks returns null", async () => {
+  getAllTasks.mockResolvedValue(null);
+
+  const onNavigate = vi.fn();
+  renderWithProviders(<TaskList onNavigate={onNavigate} />, {
+    authValue: { user: { id: "t1", role: "technician", name: "Tech" } },
+  });
+
+  // Verify that the empty state is displayed and there are 0 tasks
+  const emptyTitle = await screen.findByText("No tasks assigned");
+  expect(emptyTitle).toBeInTheDocument();
+  expect(screen.getByText("Total Tasks").nextSibling.textContent).toBe("0");
+});

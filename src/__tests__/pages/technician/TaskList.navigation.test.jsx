@@ -10,7 +10,9 @@ vi.mock("../../../services/MaintenanceService", () => ({
   getTaskById: vi.fn(),
 }));
 
-vi.mock("../../../components/common/QrScannerModal", () => ({ default: () => null }));
+vi.mock("../../../components/common/QrScannerModal", () => ({
+  default: () => null,
+}));
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -45,7 +47,10 @@ it("navigates to update-task with the task ID string, not the whole task object"
 
   // Passing the whole object would serialize to /update-task/[object Object] and the
   // task would be lost on reload.
-  expect(onNavigate).not.toHaveBeenCalledWith("update-task", expect.any(Object));
+  expect(onNavigate).not.toHaveBeenCalledWith(
+    "update-task",
+    expect.any(Object),
+  );
 });
 
 it("does not crash and renders empty state if getAllTasks returns null", async () => {

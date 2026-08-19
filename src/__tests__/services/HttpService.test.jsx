@@ -1,16 +1,29 @@
-import { describe, it, expect, vi, beforeEach, afterEach, afterAll } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  afterEach,
+  afterAll,
+} from "vitest";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 const BASE_URL = "http://localhost:8081";
 const server = setupServer(
-  http.get(, () => HttpResponse.json({ ok: true })),
+  http.get(`${BASE_URL}/api/test`, () => HttpResponse.json({ ok: true })),
 );
 const mockAlert = vi.fn();
 beforeAll(() => server.listen({ onUnhandledRequest: "bypass" }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
-beforeEach(() => { sessionStorage.clear(); vi.stubGlobal("alert", mockAlert); });
-afterEach(() => { vi.unstubAllGlobals(); });
+beforeEach(() => {
+  sessionStorage.clear();
+  vi.stubGlobal("alert", mockAlert);
+});
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 beforeEach(() => {
   sessionStorage.clear();
@@ -34,9 +47,13 @@ async function getInterceptorBehavior() {
 }
 
 it("attaches JWT Bearer token from sessionStorage", async () => {
-  sessionStorage.setItem("medtrack_user", JSON.stringify({
-    id: "u1", token: "my-jwt-token",
-  }));
+  sessionStorage.setItem(
+    "medtrack_user",
+    JSON.stringify({
+      id: "u1",
+      token: "my-jwt-token",
+    }),
+  );
 
   const { default: API } = await getInterceptorBehavior();
 
@@ -48,17 +65,15 @@ it("attaches JWT Bearer token from sessionStorage", async () => {
     }),
   );
 
-it("attaches JWT Bearer token", async () => {
-  sessionStorage.setItem("medtrack_user", JSON.stringify({ id: "u1", token: "my-jwt" }));
-  const API = await getApi();
-  let hdrs;
-  server.use(http.get(, ({ request }) => { hdrs = request.headers; return HttpResponse.json({ ok: true }); }));
   await API.get("/api/test");
-  expect(hdrs.get("Authorization")).toBe("Bearer my-jwt");
+  expect(capturedHeaders.get("Authorization")).toBe("Bearer my-jwt-token");
 });
 
 it("handles 401 by clearing sessionStorage, toasting and redirecting under the base path", async () => {
-  sessionStorage.setItem("medtrack_user", JSON.stringify({ id: "u1", token: "tok" }));
+  sessionStorage.setItem(
+    "medtrack_user",
+    JSON.stringify({ id: "u1", token: "tok" }),
+  );
 
   const { default: API, errorEmitter } = await getInterceptorBehavior();
   const dispatchSpy = vi.spyOn(errorEmitter, "dispatchEvent");
@@ -67,21 +82,29 @@ it("handles 401 by clearing sessionStorage, toasting and redirecting under the b
   dispatchSpy.mockClear();
 
   server.use(
-    http.get(`${BASE_URL}/api/test`, () => HttpResponse.json(null, { status: 401 })),
+    http.get(`${BASE_URL}/api/test`, () =>
+      HttpResponse.json(null, { status: 401 }),
+    ),
   );
 
   await expect(API.get("/api/test")).rejects.toThrow();
   expect(sessionStorage.getItem("medtrack_user")).toBeNull();
   expect(dispatchSpy).toHaveBeenCalledWith(
     expect.objectContaining({
-      detail: { message: "Session expired. Please login again.", type: "error" },
+      detail: {
+        message: "Session expired. Please login again.",
+        type: "error",
+      },
     }),
   );
   expect(window.location.href).toBe("/MedTrack_Application/login");
 });
 
 it("handles 403 with a toast and without redirect", async () => {
-  sessionStorage.setItem("medtrack_user", JSON.stringify({ id: "u1", token: "tok" }));
+  sessionStorage.setItem(
+    "medtrack_user",
+    JSON.stringify({ id: "u1", token: "tok" }),
+  );
 
   const { default: API, errorEmitter } = await getInterceptorBehavior();
   const dispatchSpy = vi.spyOn(errorEmitter, "dispatchEvent");
@@ -90,14 +113,20 @@ it("handles 403 with a toast and without redirect", async () => {
   dispatchSpy.mockClear();
 
   server.use(
-    http.get(`${BASE_URL}/api/test`, () => HttpResponse.json(null, { status: 403 })),
+    http.get(`${BASE_URL}/api/test`, () =>
+      HttpResponse.json(null, { status: 403 }),
+    ),
   );
 
   await expect(API.get("/api/test")).rejects.toThrow();
   expect(sessionStorage.getItem("medtrack_user")).not.toBeNull();
   expect(dispatchSpy).toHaveBeenCalledWith(
     expect.objectContaining({
-      detail: { message: "Access denied: You are not authorised to perform this action.", type: "error" },
+      detail: {
+        message:
+          "Access denied: You are not authorised to perform this action.",
+        type: "error",
+      },
     }),
   );
   expect(window.location.href).toBe("http://localhost:8081");
@@ -119,7 +148,10 @@ it("does not attach token when no user in sessionStorage", async () => {
 });
 
 it("clears the cached authority alongside the user on a session 401", async () => {
-  sessionStorage.setItem("medtrack_user", JSON.stringify({ id: "u1", token: "tok" }));
+  sessionStorage.setItem(
+    "medtrack_user",
+    JSON.stringify({ id: "u1", token: "tok" }),
+  );
   sessionStorage.setItem(
     "medtrack_authority",
     JSON.stringify({ authorityVersion: 4, permissions: ["EQUIPMENT_DELETE"] }),
@@ -128,7 +160,9 @@ it("clears the cached authority alongside the user on a session 401", async () =
   const { default: API } = await getInterceptorBehavior();
 
   server.use(
-    http.get(`${BASE_URL}/api/test`, () => HttpResponse.json(null, { status: 401 })),
+    http.get(`${BASE_URL}/api/test`, () =>
+      HttpResponse.json(null, { status: 401 }),
+    ),
   );
 
   await expect(API.get("/api/test")).rejects.toThrow();
@@ -181,8 +215,14 @@ describe.each([
   });
 
   it("leaves any existing session untouched", async () => {
-    sessionStorage.setItem("medtrack_user", JSON.stringify({ id: "u1", token: "tok" }));
-    sessionStorage.setItem("medtrack_authority", JSON.stringify({ authorityVersion: 2 }));
+    sessionStorage.setItem(
+      "medtrack_user",
+      JSON.stringify({ id: "u1", token: "tok" }),
+    );
+    sessionStorage.setItem(
+      "medtrack_authority",
+      JSON.stringify({ authorityVersion: 2 }),
+    );
 
     const { default: API } = await getInterceptorBehavior();
 
@@ -204,7 +244,10 @@ describe.each([
 });
 
 it("still treats a 401 from an authenticated auth endpoint as an expired session", async () => {
-  sessionStorage.setItem("medtrack_user", JSON.stringify({ id: "u1", token: "tok" }));
+  sessionStorage.setItem(
+    "medtrack_user",
+    JSON.stringify({ id: "u1", token: "tok" }),
+  );
 
   const { default: API, errorEmitter } = await getInterceptorBehavior();
   const dispatchSpy = vi.spyOn(errorEmitter, "dispatchEvent");
@@ -231,21 +274,30 @@ it("matches the auth paths on the path alone, ignoring any query string", async 
   const { default: API } = await getInterceptorBehavior();
 
   server.use(
-    http.post(`${BASE_URL}/api/auth/login`, () => HttpResponse.json(null, { status: 401 })),
+    http.post(`${BASE_URL}/api/auth/login`, () =>
+      HttpResponse.json(null, { status: 401 }),
+    ),
   );
 
-  await expect(API.post("/api/auth/login?redirect=%2Fdashboard", {})).rejects.toThrow();
+  await expect(
+    API.post("/api/auth/login?redirect=%2Fdashboard", {}),
+  ).rejects.toThrow();
 
   expect(window.location.href).toBe("http://localhost:8081");
 });
 
 it("does not exempt an unrelated path that merely starts the same way", async () => {
-  sessionStorage.setItem("medtrack_user", JSON.stringify({ id: "u1", token: "tok" }));
+  sessionStorage.setItem(
+    "medtrack_user",
+    JSON.stringify({ id: "u1", token: "tok" }),
+  );
 
   const { default: API } = await getInterceptorBehavior();
 
   server.use(
-    http.get(`${BASE_URL}/api/auth/login-history`, () => HttpResponse.json(null, { status: 401 })),
+    http.get(`${BASE_URL}/api/auth/login-history`, () =>
+      HttpResponse.json(null, { status: 401 }),
+    ),
   );
 
   await expect(API.get("/api/auth/login-history")).rejects.toThrow();

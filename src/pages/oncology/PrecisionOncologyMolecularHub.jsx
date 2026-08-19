@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Dna,
   Activity,
@@ -25,8 +25,8 @@ import {
   Sliders,
   Send,
   Download,
-  AlertCircle
-} from 'lucide-react';
+  AlertCircle,
+} from "lucide-react";
 
 const PATIENTS_MOCK = [
   {
@@ -53,7 +53,7 @@ const PATIENTS_MOCK = [
         therapy: "Osimertinib 80mg PO QD",
         fdaApproval: "FDA Approved (NCCN Category 1)",
         resistance: "T790M / C797S Negative",
-        readDepth: "1,420x"
+        readDepth: "1,420x",
       },
       {
         gene: "TP53",
@@ -63,7 +63,7 @@ const PATIENTS_MOCK = [
         therapy: "Investigational WEE1 / ATR Inhibitors",
         fdaApproval: "Off-label / Trial Matching",
         resistance: "Impaired Apoptosis",
-        readDepth: "1,180x"
+        readDepth: "1,180x",
       },
       {
         gene: "MET",
@@ -73,18 +73,44 @@ const PATIENTS_MOCK = [
         therapy: "Capmatinib / Tepotinib",
         fdaApproval: "FDA Approved (NCCN Cat 1)",
         resistance: "Potential bypass resistance",
-        readDepth: "980x"
-      }
+        readDepth: "980x",
+      },
     ],
     pharmacogenomics: [
-      { gene: "DPYD", genotype: "*1/*1 (Normal Metabolizer)", risk: "Standard Fluoropyrimidine Dosing", status: "SAFE" },
-      { gene: "CYP2D6", genotype: "*4/*4 (Poor Metabolizer)", risk: "Impaired Tamoxifen/Codeine Bioactivation", status: "WARNING" },
-      { gene: "UGT1A1", genotype: "*1/*28 (Intermediate)", risk: "Moderate Irinotecan Toxicity Risk", status: "CAUTION" }
+      {
+        gene: "DPYD",
+        genotype: "*1/*1 (Normal Metabolizer)",
+        risk: "Standard Fluoropyrimidine Dosing",
+        status: "SAFE",
+      },
+      {
+        gene: "CYP2D6",
+        genotype: "*4/*4 (Poor Metabolizer)",
+        risk: "Impaired Tamoxifen/Codeine Bioactivation",
+        status: "WARNING",
+      },
+      {
+        gene: "UGT1A1",
+        genotype: "*1/*28 (Intermediate)",
+        risk: "Moderate Irinotecan Toxicity Risk",
+        status: "CAUTION",
+      },
     ],
     trials: [
-      { id: "NCT05048797", title: "Trastuzumab Deruxtecan in HER2/EGFR Mutant Thoracic Malignancies", phase: "Phase 2", matchScore: "98%" },
-      { id: "NCT04611113", title: "Dual Target MET + EGFR Tyrosine Kinase Blockade", phase: "Phase 3", matchScore: "94%" }
-    ]
+      {
+        id: "NCT05048797",
+        title:
+          "Trastuzumab Deruxtecan in HER2/EGFR Mutant Thoracic Malignancies",
+        phase: "Phase 2",
+        matchScore: "98%",
+      },
+      {
+        id: "NCT04611113",
+        title: "Dual Target MET + EGFR Tyrosine Kinase Blockade",
+        phase: "Phase 3",
+        matchScore: "94%",
+      },
+    ],
   },
   {
     id: "PAT-ONC-9104",
@@ -110,7 +136,7 @@ const PATIENTS_MOCK = [
         therapy: "Encorafenib + Cetuximab",
         fdaApproval: "FDA Approved (BEACON Regimen)",
         resistance: "MAPK pathway reactivation",
-        readDepth: "2,240x"
+        readDepth: "2,240x",
       },
       {
         gene: "KRAS",
@@ -120,7 +146,7 @@ const PATIENTS_MOCK = [
         therapy: "Permits Anti-EGFR Monoclonal Antibody",
         fdaApproval: "NCCN Guideline Standard",
         resistance: "None",
-        readDepth: "3,100x"
+        readDepth: "3,100x",
       },
       {
         gene: "PIK3CA",
@@ -130,16 +156,32 @@ const PATIENTS_MOCK = [
         therapy: "Alpelisib (Clinical Study Setting)",
         fdaApproval: "Off-label exploration",
         resistance: "PI3K/AKT/mTOR activation",
-        readDepth: "1,520x"
-      }
+        readDepth: "1,520x",
+      },
     ],
     pharmacogenomics: [
-      { gene: "DPYD", genotype: "*2A/*1 (Intermediate Metabolizer)", risk: "HIGH: MANDATORY 50% 5-FU/Capecitabine reduction", status: "DANGER" },
-      { gene: "UGT1A1", genotype: "*28/*28 (Poor Metabolizer)", risk: "SEVERE: Irinotecan-induced Grade 4 Diarrhea", status: "DANGER" }
+      {
+        gene: "DPYD",
+        genotype: "*2A/*1 (Intermediate Metabolizer)",
+        risk: "HIGH: MANDATORY 50% 5-FU/Capecitabine reduction",
+        status: "DANGER",
+      },
+      {
+        gene: "UGT1A1",
+        genotype: "*28/*28 (Poor Metabolizer)",
+        risk: "SEVERE: Irinotecan-induced Grade 4 Diarrhea",
+        status: "DANGER",
+      },
     ],
     trials: [
-      { id: "NCT03693170", title: "Encorafenib + Cetuximab + Binimetinib Triplet in BRAF V600E mCRC", phase: "Phase 3", matchScore: "99%" }
-    ]
+      {
+        id: "NCT03693170",
+        title:
+          "Encorafenib + Cetuximab + Binimetinib Triplet in BRAF V600E mCRC",
+        phase: "Phase 3",
+        matchScore: "99%",
+      },
+    ],
   },
   {
     id: "PAT-ONC-7749",
@@ -165,7 +207,7 @@ const PATIENTS_MOCK = [
         therapy: "Olaparib / Niraparib Maintenance",
         fdaApproval: "FDA Approved (SOLO-1 / PAOLA-1)",
         resistance: "Secondary reversion mutations monitored",
-        readDepth: "2,890x"
+        readDepth: "2,890x",
       },
       {
         gene: "NTRK1",
@@ -175,39 +217,66 @@ const PATIENTS_MOCK = [
         therapy: "Larotrectinib / Entrectinib",
         fdaApproval: "FDA Agnostic Approval",
         resistance: "NTRK kinase solvent front mutations",
-        readDepth: "1,980x"
-      }
+        readDepth: "1,980x",
+      },
     ],
     pharmacogenomics: [
-      { gene: "DPYD", genotype: "*1/*1 (Normal)", risk: "Standard Fluoropyrimidine Tolerability", status: "SAFE" },
-      { gene: "TPMT", genotype: "*1/*1 (Normal)", risk: "Standard Thiopurine clearance", status: "SAFE" }
+      {
+        gene: "DPYD",
+        genotype: "*1/*1 (Normal)",
+        risk: "Standard Fluoropyrimidine Tolerability",
+        status: "SAFE",
+      },
+      {
+        gene: "TPMT",
+        genotype: "*1/*1 (Normal)",
+        risk: "Standard Thiopurine clearance",
+        status: "SAFE",
+      },
     ],
     trials: [
-      { id: "NCT04837209", title: "Dual PARP + ATR Inhibitor in BRCA-Mutated Solid Tumors", phase: "Phase 1b/2", matchScore: "97%" }
-    ]
-  }
+      {
+        id: "NCT04837209",
+        title: "Dual PARP + ATR Inhibitor in BRCA-Mutated Solid Tumors",
+        phase: "Phase 1b/2",
+        matchScore: "97%",
+      },
+    ],
+  },
 ];
 
 export default function PrecisionOncologyMolecularHub() {
-  const [selectedPatientId, setSelectedPatientId] = useState(PATIENTS_MOCK[0].id);
-  const [activeTab, setActiveTab] = useState('genomics'); // genomics, mtb, pgx, trials, emergency
+  const [selectedPatientId, setSelectedPatientId] = useState(
+    PATIENTS_MOCK[0].id,
+  );
+  const [activeTab, setActiveTab] = useState("genomics"); // genomics, mtb, pgx, trials, emergency
   const [telemetryTick, setTelemetryTick] = useState(0);
   const [isSimulatingNgs, setIsSimulatingNgs] = useState(false);
   const [selectedAlteration, setSelectedAlteration] = useState(null);
-  const [filterGene, setFilterGene] = useState('');
+  const [filterGene, setFilterGene] = useState("");
   const [emergencyAlertActive, setEmergencyAlertActive] = useState(false);
   const [auditLog, setAuditLog] = useState([
-    { time: "18:40:12", user: "Dr. H. Chen (Chief Oncologist)", action: "Signed off Molecular Tumor Board Recommendation" },
-    { time: "18:25:05", user: "Bioinformatics Pipeline v4.8", action: "Illumina NovaSeq 6000 VCF / BAM alignment synchronized" }
+    {
+      time: "18:40:12",
+      user: "Dr. H. Chen (Chief Oncologist)",
+      action: "Signed off Molecular Tumor Board Recommendation",
+    },
+    {
+      time: "18:25:05",
+      user: "Bioinformatics Pipeline v4.8",
+      action: "Illumina NovaSeq 6000 VCF / BAM alignment synchronized",
+    },
   ]);
 
   const patient = useMemo(() => {
-    return PATIENTS_MOCK.find(p => p.id === selectedPatientId) || PATIENTS_MOCK[0];
+    return (
+      PATIENTS_MOCK.find((p) => p.id === selectedPatientId) || PATIENTS_MOCK[0]
+    );
   }, [selectedPatientId]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTelemetryTick(t => t + 1);
+      setTelemetryTick((t) => t + 1);
     }, 3000);
     return () => clearInterval(timer);
   }, []);
@@ -216,16 +285,21 @@ export default function PrecisionOncologyMolecularHub() {
     setIsSimulatingNgs(true);
     setTimeout(() => {
       setIsSimulatingNgs(false);
-      setAuditLog(prev => [
-        { time: new Date().toLocaleTimeString(), user: "System", action: `NGS Variant Caller re-annotated for ${patient.id} against ClinVar & COSMIC 2026` },
-        ...prev
+      setAuditLog((prev) => [
+        {
+          time: new Date().toLocaleTimeString(),
+          user: "System",
+          action: `NGS Variant Caller re-annotated for ${patient.id} against ClinVar & COSMIC 2026`,
+        },
+        ...prev,
       ]);
     }, 1800);
   };
 
-  const filteredAlterations = patient.alterations.filter(a =>
-    a.gene.toLowerCase().includes(filterGene.toLowerCase()) ||
-    a.variant.toLowerCase().includes(filterGene.toLowerCase())
+  const filteredAlterations = patient.alterations.filter(
+    (a) =>
+      a.gene.toLowerCase().includes(filterGene.toLowerCase()) ||
+      a.variant.toLowerCase().includes(filterGene.toLowerCase()),
   );
 
   return (
@@ -246,7 +320,8 @@ export default function PrecisionOncologyMolecularHub() {
               </span>
             </div>
             <p className="text-xs md:text-sm text-slate-400 mt-0.5">
-              Next-Generation Genomic Variant Sequencing, Biomarker Stratification & Actionable Targeted Decision Support
+              Next-Generation Genomic Variant Sequencing, Biomarker
+              Stratification & Actionable Targeted Decision Support
             </p>
           </div>
         </div>
@@ -257,12 +332,16 @@ export default function PrecisionOncologyMolecularHub() {
             onClick={() => setEmergencyAlertActive(!emergencyAlertActive)}
             className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all shadow-md ${
               emergencyAlertActive
-                ? 'bg-rose-600 text-white animate-bounce shadow-rose-900/60'
-                : 'bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-800/80'
+                ? "bg-rose-600 text-white animate-bounce shadow-rose-900/60"
+                : "bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-800/80"
             }`}
           >
             <ShieldAlert className="w-4 h-4" />
-            <span>{emergencyAlertActive ? "TOXICITY OVERWATCH ACTIVE" : "EMERGENCY PROTOCOL"}</span>
+            <span>
+              {emergencyAlertActive
+                ? "TOXICITY OVERWATCH ACTIVE"
+                : "EMERGENCY PROTOCOL"}
+            </span>
           </button>
 
           <button
@@ -270,8 +349,12 @@ export default function PrecisionOncologyMolecularHub() {
             disabled={isSimulatingNgs}
             className="flex items-center space-x-2 px-3.5 py-2 rounded-lg bg-indigo-900/40 hover:bg-indigo-800/60 border border-indigo-700/60 text-indigo-300 text-xs font-semibold transition"
           >
-            <RefreshCw className={`w-4 h-4 ${isSimulatingNgs ? 'animate-spin text-cyan-400' : ''}`} />
-            <span>{isSimulatingNgs ? "Re-aligning BAM..." : "Re-run NGS Pipeline"}</span>
+            <RefreshCw
+              className={`w-4 h-4 ${isSimulatingNgs ? "animate-spin text-cyan-400" : ""}`}
+            />
+            <span>
+              {isSimulatingNgs ? "Re-aligning BAM..." : "Re-run NGS Pipeline"}
+            </span>
           </button>
         </div>
       </div>
@@ -283,19 +366,27 @@ export default function PrecisionOncologyMolecularHub() {
             <Flame className="w-7 h-7 text-rose-400 animate-pulse flex-shrink-0" />
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-sm font-black text-rose-200 tracking-wider">CODE ONCOLOGY TOXICITY / IMMUNE-RELATED ADVERSE EVENT (irAE)</span>
-                <span className="px-2 py-0.5 text-xs bg-rose-600 text-white font-bold rounded">GRADE 3/4 TRIGGER</span>
+                <span className="text-sm font-black text-rose-200 tracking-wider">
+                  CODE ONCOLOGY TOXICITY / IMMUNE-RELATED ADVERSE EVENT (irAE)
+                </span>
+                <span className="px-2 py-0.5 text-xs bg-rose-600 text-white font-bold rounded">
+                  GRADE 3/4 TRIGGER
+                </span>
               </div>
               <p className="text-xs text-rose-300 mt-1">
-                Active Protocol: Cytokine Release Syndrome (CRS) / Immune Effector Cell Neurotoxicity (ICANS) / Febrile Neutropenia.
-                Initiate IV Methylprednisolone 2mg/kg QD, Tocilizumab 8mg/kg IV, and Infectious Disease Broad-Spectrum Coverage.
+                Active Protocol: Cytokine Release Syndrome (CRS) / Immune
+                Effector Cell Neurotoxicity (ICANS) / Febrile Neutropenia.
+                Initiate IV Methylprednisolone 2mg/kg QD, Tocilizumab 8mg/kg IV,
+                and Infectious Disease Broad-Spectrum Coverage.
               </p>
             </div>
           </div>
           <div className="flex items-center space-x-2 w-full md:w-auto">
             <button
               onClick={() => {
-                alert("Order Placed: STAT Tocilizumab 8mg/kg + Solu-Medrol 125mg IV administered.");
+                alert(
+                  "Order Placed: STAT Tocilizumab 8mg/kg + Solu-Medrol 125mg IV administered.",
+                );
                 setEmergencyAlertActive(false);
               }}
               className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold uppercase tracking-wider transition shadow-lg shadow-rose-950"
@@ -333,13 +424,18 @@ export default function PrecisionOncologyMolecularHub() {
           </select>
           <div className="mt-3 text-xs text-slate-400 space-y-1">
             <div className="flex justify-between">
-              <span>MRN:</span> <span className="font-mono text-slate-200">{patient.mrn}</span>
+              <span>MRN:</span>{" "}
+              <span className="font-mono text-slate-200">{patient.mrn}</span>
             </div>
             <div className="flex justify-between">
-              <span>Primary Diagnosis:</span> <span className="text-slate-200 font-medium truncate max-w-[180px]">{patient.diagnosis}</span>
+              <span>Primary Diagnosis:</span>{" "}
+              <span className="text-slate-200 font-medium truncate max-w-[180px]">
+                {patient.diagnosis}
+              </span>
             </div>
             <div className="flex justify-between">
-              <span>Specimen:</span> <span className="text-slate-300">{patient.tissueSource}</span>
+              <span>Specimen:</span>{" "}
+              <span className="text-slate-300">{patient.tissueSource}</span>
             </div>
           </div>
         </div>
@@ -347,40 +443,59 @@ export default function PrecisionOncologyMolecularHub() {
         {/* Genomic Biomarkers Snapshot */}
         <div className="bg-slate-900/90 border border-slate-800 p-4 rounded-xl shadow-lg flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs uppercase font-bold tracking-wider text-slate-400">Tumor Mutational Burden (TMB)</span>
+            <span className="text-xs uppercase font-bold tracking-wider text-slate-400">
+              Tumor Mutational Burden (TMB)
+            </span>
             <Cpu className="w-4 h-4 text-cyan-400" />
           </div>
           <div className="my-2">
-            <div className="text-2xl font-black text-cyan-300">{patient.tmbScore} <span className="text-xs font-normal text-slate-400">mut/Mb</span></div>
-            <span className={`inline-block mt-1 px-2 py-0.5 text-xs font-bold rounded ${patient.tmbScore >= 10 ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-slate-800 text-slate-300'}`}>
-              {patient.tmbScore >= 10 ? "TMB-High (FDA Agnostic Response >=10)" : "TMB-Low / Intermediate"}
+            <div className="text-2xl font-black text-cyan-300">
+              {patient.tmbScore}{" "}
+              <span className="text-xs font-normal text-slate-400">mut/Mb</span>
+            </div>
+            <span
+              className={`inline-block mt-1 px-2 py-0.5 text-xs font-bold rounded ${patient.tmbScore >= 10 ? "bg-emerald-950 text-emerald-400 border border-emerald-800" : "bg-slate-800 text-slate-300"}`}
+            >
+              {patient.tmbScore >= 10
+                ? "TMB-High (FDA Agnostic Response >=10)"
+                : "TMB-Low / Intermediate"}
             </span>
           </div>
           <div className="text-xs text-slate-400 flex justify-between border-t border-slate-800/80 pt-2">
             <span>MSI Status:</span>
-            <span className="font-bold text-amber-300">{patient.msiStatus}</span>
+            <span className="font-bold text-amber-300">
+              {patient.msiStatus}
+            </span>
           </div>
         </div>
 
         {/* HRD & PD-L1 Status */}
         <div className="bg-slate-900/90 border border-slate-800 p-4 rounded-xl shadow-lg flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs uppercase font-bold tracking-wider text-slate-400">HRD & PD-L1 Expression</span>
+            <span className="text-xs uppercase font-bold tracking-wider text-slate-400">
+              HRD & PD-L1 Expression
+            </span>
             <Microscope className="w-4 h-4 text-indigo-400" />
           </div>
           <div className="my-2 grid grid-cols-2 gap-2">
             <div>
-              <div className="text-xl font-bold text-indigo-300">{patient.hrdScore}</div>
+              <div className="text-xl font-bold text-indigo-300">
+                {patient.hrdScore}
+              </div>
               <span className="text-xs text-slate-400">HRD Scar Score</span>
             </div>
             <div>
-              <div className="text-xl font-bold text-purple-300">{patient.pdl1Tps}%</div>
+              <div className="text-xl font-bold text-purple-300">
+                {patient.pdl1Tps}%
+              </div>
               <span className="text-xs text-slate-400">PD-L1 TPS</span>
             </div>
           </div>
           <div className="text-xs text-slate-400 flex justify-between border-t border-slate-800/80 pt-2">
             <span>ctDNA Liquid Biopsy VAF:</span>
-            <span className="font-mono text-cyan-300 font-bold">{patient.ctDnaVaf}%</span>
+            <span className="font-mono text-cyan-300 font-bold">
+              {patient.ctDnaVaf}%
+            </span>
           </div>
         </div>
 
@@ -396,20 +511,29 @@ export default function PrecisionOncologyMolecularHub() {
           <div className="grid grid-cols-3 gap-2 my-2 text-center">
             <div className="bg-slate-950/60 p-2 rounded border border-slate-800">
               <span className="text-xs text-slate-400">HR</span>
-              <div className="text-lg font-bold text-emerald-300">{patient.vitalTelemetry.hr + (telemetryTick % 3) - 1} <span className="text-xs font-normal">bpm</span></div>
+              <div className="text-lg font-bold text-emerald-300">
+                {patient.vitalTelemetry.hr + (telemetryTick % 3) - 1}{" "}
+                <span className="text-xs font-normal">bpm</span>
+              </div>
             </div>
             <div className="bg-slate-950/60 p-2 rounded border border-slate-800">
               <span className="text-xs text-slate-400">BP</span>
-              <div className="text-sm font-bold text-slate-200">{patient.vitalTelemetry.bp}</div>
+              <div className="text-sm font-bold text-slate-200">
+                {patient.vitalTelemetry.bp}
+              </div>
             </div>
             <div className="bg-slate-950/60 p-2 rounded border border-slate-800">
               <span className="text-xs text-slate-400">SpO2</span>
-              <div className="text-lg font-bold text-cyan-300">{patient.vitalTelemetry.spo2}%</div>
+              <div className="text-lg font-bold text-cyan-300">
+                {patient.vitalTelemetry.spo2}%
+              </div>
             </div>
           </div>
           <div className="text-xs text-slate-400 flex justify-between border-t border-slate-800/80 pt-2">
             <span>ECOG Performance:</span>
-            <span className="font-bold text-emerald-400">Score {patient.vitalTelemetry.ecog}</span>
+            <span className="font-bold text-emerald-400">
+              Score {patient.vitalTelemetry.ecog}
+            </span>
           </div>
         </div>
       </div>
@@ -417,11 +541,30 @@ export default function PrecisionOncologyMolecularHub() {
       {/* Navigation Tabs */}
       <div className="flex items-center space-x-2 border-b border-slate-800 mt-6 pb-2 overflow-x-auto">
         {[
-          { id: 'genomics', label: 'Actionable Genomic Alterations', icon: Dna, count: patient.alterations.length },
-          { id: 'mtb', label: 'Molecular Tumor Board (MTB) Deliberation', icon: Stethoscope },
-          { id: 'pgx', label: 'Pharmacogenomics (PGx) Safety', icon: ShieldAlert, count: patient.pharmacogenomics.length },
-          { id: 'trials', label: 'Biomarker-Matched Clinical Trials', icon: Award, count: patient.trials.length },
-          { id: 'fhir', label: 'HL7 FHIR R4 & Audit Ledger', icon: FileText }
+          {
+            id: "genomics",
+            label: "Actionable Genomic Alterations",
+            icon: Dna,
+            count: patient.alterations.length,
+          },
+          {
+            id: "mtb",
+            label: "Molecular Tumor Board (MTB) Deliberation",
+            icon: Stethoscope,
+          },
+          {
+            id: "pgx",
+            label: "Pharmacogenomics (PGx) Safety",
+            icon: ShieldAlert,
+            count: patient.pharmacogenomics.length,
+          },
+          {
+            id: "trials",
+            label: "Biomarker-Matched Clinical Trials",
+            icon: Award,
+            count: patient.trials.length,
+          },
+          { id: "fhir", label: "HL7 FHIR R4 & Audit Ledger", icon: FileText },
         ].map((tab) => {
           const Icon = tab.icon;
           return (
@@ -430,14 +573,16 @@ export default function PrecisionOncologyMolecularHub() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs md:text-sm font-semibold transition whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'bg-cyan-950 text-cyan-300 border border-cyan-600 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                  ? "bg-cyan-950 text-cyan-300 border border-cyan-600 shadow-md"
+                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
               }`}
             >
               <Icon className="w-4 h-4" />
               <span>{tab.label}</span>
               {tab.count !== undefined && (
-                <span className={`px-1.5 py-0.2 rounded-full text-xs ${activeTab === tab.id ? 'bg-cyan-800 text-cyan-100' : 'bg-slate-800 text-slate-400'}`}>
+                <span
+                  className={`px-1.5 py-0.2 rounded-full text-xs ${activeTab === tab.id ? "bg-cyan-800 text-cyan-100" : "bg-slate-800 text-slate-400"}`}
+                >
                   {tab.count}
                 </span>
               )}
@@ -448,7 +593,7 @@ export default function PrecisionOncologyMolecularHub() {
 
       {/* Main Content Area */}
       <div className="mt-6">
-        {activeTab === 'genomics' && (
+        {activeTab === "genomics" && (
           <div className="space-y-6">
             {/* Search and Filters */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
@@ -464,7 +609,10 @@ export default function PrecisionOncologyMolecularHub() {
               </div>
               <div className="flex items-center space-x-2 text-xs text-slate-400">
                 <Filter className="w-4 h-4 text-cyan-400" />
-                <span>Tier Classification Standard: <strong>AMP / ASCO / CAP 2026</strong></span>
+                <span>
+                  Tier Classification Standard:{" "}
+                  <strong>AMP / ASCO / CAP 2026</strong>
+                </span>
               </div>
             </div>
 
@@ -476,8 +624,8 @@ export default function PrecisionOncologyMolecularHub() {
                   onClick={() => setSelectedAlteration(alt)}
                   className={`cursor-pointer p-4 rounded-xl border transition-all duration-200 ${
                     selectedAlteration?.gene === alt.gene
-                      ? 'bg-slate-900 border-cyan-400 shadow-lg shadow-cyan-950/40 ring-1 ring-cyan-500/50'
-                      : 'bg-slate-900/80 border-slate-800 hover:border-slate-700'
+                      ? "bg-slate-900 border-cyan-400 shadow-lg shadow-cyan-950/40 ring-1 ring-cyan-500/50"
+                      : "bg-slate-900/80 border-slate-800 hover:border-slate-700"
                   }`}
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
@@ -487,7 +635,9 @@ export default function PrecisionOncologyMolecularHub() {
                       </div>
                       <div>
                         <div className="flex items-center space-x-2">
-                          <span className="font-bold text-slate-100">{alt.variant}</span>
+                          <span className="font-bold text-slate-100">
+                            {alt.variant}
+                          </span>
                           <span className="px-2 py-0.5 text-xs bg-slate-800 text-cyan-300 font-mono rounded">
                             VAF: {alt.vaf}
                           </span>
@@ -495,7 +645,9 @@ export default function PrecisionOncologyMolecularHub() {
                             Depth: {alt.readDepth}
                           </span>
                         </div>
-                        <p className="text-xs text-slate-400 mt-0.5">{alt.tier}</p>
+                        <p className="text-xs text-slate-400 mt-0.5">
+                          {alt.tier}
+                        </p>
                       </div>
                     </div>
 
@@ -509,11 +661,17 @@ export default function PrecisionOncologyMolecularHub() {
 
                   <div className="mt-3 pt-3 border-t border-slate-800/80 grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
                     <div>
-                      <span className="text-slate-400">Targeted Therapeutic Option:</span>{' '}
-                      <span className="text-cyan-300 font-semibold">{alt.therapy}</span>
+                      <span className="text-slate-400">
+                        Targeted Therapeutic Option:
+                      </span>{" "}
+                      <span className="text-cyan-300 font-semibold">
+                        {alt.therapy}
+                      </span>
                     </div>
                     <div>
-                      <span className="text-slate-400">Known Resistance Pathways:</span>{' '}
+                      <span className="text-slate-400">
+                        Known Resistance Pathways:
+                      </span>{" "}
                       <span className="text-rose-300">{alt.resistance}</span>
                     </div>
                   </div>
@@ -528,7 +686,8 @@ export default function PrecisionOncologyMolecularHub() {
                   <div className="flex items-center space-x-2">
                     <Microscope className="w-5 h-5 text-cyan-400" />
                     <h3 className="font-bold text-base text-cyan-300">
-                      Molecular Variant Deep Inspector: {selectedAlteration.gene} ({selectedAlteration.variant})
+                      Molecular Variant Deep Inspector:{" "}
+                      {selectedAlteration.gene} ({selectedAlteration.variant})
                     </h3>
                   </div>
                   <button
@@ -541,7 +700,9 @@ export default function PrecisionOncologyMolecularHub() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-xs">
                   <div className="bg-slate-950 p-3 rounded-lg border border-slate-800">
-                    <span className="text-slate-400 font-semibold uppercase">Bioinformatics QC</span>
+                    <span className="text-slate-400 font-semibold uppercase">
+                      Bioinformatics QC
+                    </span>
                     <ul className="mt-2 space-y-1 text-slate-300 font-mono">
                       <li>Sequencing Platform: Illumina NovaSeq 6000</li>
                       <li>Mean Base Quality (Q30): 99.4%</li>
@@ -551,17 +712,24 @@ export default function PrecisionOncologyMolecularHub() {
                   </div>
 
                   <div className="bg-slate-950 p-3 rounded-lg border border-slate-800">
-                    <span className="text-slate-400 font-semibold uppercase">Therapeutic Regimens</span>
+                    <span className="text-slate-400 font-semibold uppercase">
+                      Therapeutic Regimens
+                    </span>
                     <p className="mt-2 text-cyan-200 font-medium leading-relaxed">
                       First-line recommendation: {selectedAlteration.therapy}.
-                      Cross-referenced against ESMO Scale for Clinical Actionability of molecular Targets (ESCAT: Tier I-A).
+                      Cross-referenced against ESMO Scale for Clinical
+                      Actionability of molecular Targets (ESCAT: Tier I-A).
                     </p>
                   </div>
 
                   <div className="bg-slate-950 p-3 rounded-lg border border-slate-800">
-                    <span className="text-slate-400 font-semibold uppercase">Resistance Surveillance</span>
+                    <span className="text-slate-400 font-semibold uppercase">
+                      Resistance Surveillance
+                    </span>
                     <p className="mt-2 text-amber-200">
-                      Liquid biopsy ctDNA surveillance suggested every 6-8 weeks to capture emerging resistance: {selectedAlteration.resistance}.
+                      Liquid biopsy ctDNA surveillance suggested every 6-8 weeks
+                      to capture emerging resistance:{" "}
+                      {selectedAlteration.resistance}.
                     </p>
                   </div>
                 </div>
@@ -570,20 +738,27 @@ export default function PrecisionOncologyMolecularHub() {
           </div>
         )}
 
-        {activeTab === 'mtb' && (
+        {activeTab === "mtb" && (
           <div className="bg-slate-900/90 border border-slate-800 p-6 rounded-xl space-y-6">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
                 <h2 className="text-lg font-bold text-slate-100 flex items-center space-x-2">
                   <Stethoscope className="w-5 h-5 text-indigo-400" />
-                  <span>Multidisciplinary Molecular Tumor Board (MTB) Deliberation</span>
+                  <span>
+                    Multidisciplinary Molecular Tumor Board (MTB) Deliberation
+                  </span>
                 </h2>
                 <p className="text-xs text-slate-400 mt-1">
-                  Consensus recommendation engine integrating Pathology, Medical Oncology, Clinical Genomics, and Pharmacokinetics.
+                  Consensus recommendation engine integrating Pathology, Medical
+                  Oncology, Clinical Genomics, and Pharmacokinetics.
                 </p>
               </div>
               <button
-                onClick={() => alert("Consensus Protocol Exported to EHR & Clinician Mobile Portal.")}
+                onClick={() =>
+                  alert(
+                    "Consensus Protocol Exported to EHR & Clinician Mobile Portal.",
+                  )
+                }
                 className="flex items-center space-x-2 px-3.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md transition"
               >
                 <Share2 className="w-4 h-4" />
@@ -600,14 +775,23 @@ export default function PrecisionOncologyMolecularHub() {
                 </h4>
                 <div className="text-xs text-slate-300 space-y-2 leading-relaxed">
                   <p>
-                    <strong>Primary Target:</strong> Patient exhibits actionable biomarker profile ({patient.alterations.map(a => a.gene).join(', ')}).
+                    <strong>Primary Target:</strong> Patient exhibits actionable
+                    biomarker profile (
+                    {patient.alterations.map((a) => a.gene).join(", ")}).
                   </p>
                   <p>
-                    <strong>Immunotherapy Stratification:</strong> TMB score of {patient.tmbScore} mut/Mb indicates high likelihood of neoantigen presentation.
-                    {patient.tmbScore >= 10 ? ' Combined with PD-L1 expression, immune checkpoint blockade is strongly indicated.' : ' Monotherapy immune checkpoint inhibition may exhibit diminished overall response.'}
+                    <strong>Immunotherapy Stratification:</strong> TMB score of{" "}
+                    {patient.tmbScore} mut/Mb indicates high likelihood of
+                    neoantigen presentation.
+                    {patient.tmbScore >= 10
+                      ? " Combined with PD-L1 expression, immune checkpoint blockade is strongly indicated."
+                      : " Monotherapy immune checkpoint inhibition may exhibit diminished overall response."}
                   </p>
                   <p>
-                    <strong>DNA Damage Repair:</strong> HRD Score {patient.hrdScore} exceeds homologous recombination deficiency threshold (Score >= 42), qualifying for synthetic lethality PARP inhibition.
+                    <strong>DNA Damage Repair:</strong> HRD Score{" "}
+                    {patient.hrdScore} exceeds homologous recombination
+                    deficiency threshold (Score &gt;= 42), qualifying for
+                    synthetic lethality PARP inhibition.
                   </p>
                 </div>
               </div>
@@ -618,17 +802,32 @@ export default function PrecisionOncologyMolecularHub() {
                   <span>Proposed Multidisciplinary Plan</span>
                 </h4>
                 <ol className="text-xs text-slate-300 space-y-2 list-decimal list-inside leading-relaxed">
-                  <li>Initiate targeted precision agent: <span className="text-cyan-300 font-semibold">{patient.alterations[0]?.therapy}</span>.</li>
-                  <li>Schedule baseline brain MRI and thoracic CT with IV contrast in 8 weeks.</li>
-                  <li>Perform Serial Liquid Biopsy ctDNA sampling at Cycle 2 Day 1 to evaluate molecular response kinetic.</li>
-                  <li>Review Pharmacogenomic alerts prior to initiating any fluoropyrimidine or irinotecan cytotoxic backbones.</li>
+                  <li>
+                    Initiate targeted precision agent:{" "}
+                    <span className="text-cyan-300 font-semibold">
+                      {patient.alterations[0]?.therapy}
+                    </span>
+                    .
+                  </li>
+                  <li>
+                    Schedule baseline brain MRI and thoracic CT with IV contrast
+                    in 8 weeks.
+                  </li>
+                  <li>
+                    Perform Serial Liquid Biopsy ctDNA sampling at Cycle 2 Day 1
+                    to evaluate molecular response kinetic.
+                  </li>
+                  <li>
+                    Review Pharmacogenomic alerts prior to initiating any
+                    fluoropyrimidine or irinotecan cytotoxic backbones.
+                  </li>
                 </ol>
               </div>
             </div>
           </div>
         )}
 
-        {activeTab === 'pgx' && (
+        {activeTab === "pgx" && (
           <div className="bg-slate-900/90 border border-slate-800 p-6 rounded-xl space-y-4">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
@@ -637,7 +836,8 @@ export default function PrecisionOncologyMolecularHub() {
                   <span>Pharmacogenomic (PGx) Safety & Dosing Calculator</span>
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  CPIC & DPWG guideline-adherent metabolic phenotypes to prevent life-threatening chemotherapy toxicities.
+                  CPIC & DPWG guideline-adherent metabolic phenotypes to prevent
+                  life-threatening chemotherapy toxicities.
                 </p>
               </div>
             </div>
@@ -647,40 +847,46 @@ export default function PrecisionOncologyMolecularHub() {
                 <div
                   key={idx}
                   className={`p-4 rounded-xl border ${
-                    pg.status === 'DANGER'
-                      ? 'bg-rose-950/40 border-rose-600'
-                      : pg.status === 'WARNING'
-                      ? 'bg-amber-950/40 border-amber-600'
-                      : pg.status === 'CAUTION'
-                      ? 'bg-yellow-950/30 border-yellow-700'
-                      : 'bg-slate-950 border-slate-800'
+                    pg.status === "DANGER"
+                      ? "bg-rose-950/40 border-rose-600"
+                      : pg.status === "WARNING"
+                        ? "bg-amber-950/40 border-amber-600"
+                        : pg.status === "CAUTION"
+                          ? "bg-yellow-950/30 border-yellow-700"
+                          : "bg-slate-950 border-slate-800"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-base font-bold font-mono text-cyan-300">{pg.gene}</span>
+                    <span className="text-base font-bold font-mono text-cyan-300">
+                      {pg.gene}
+                    </span>
                     <span
                       className={`px-2 py-0.5 text-xs font-bold rounded ${
-                        pg.status === 'DANGER'
-                          ? 'bg-rose-600 text-white'
-                          : pg.status === 'WARNING'
-                          ? 'bg-amber-600 text-white'
-                          : pg.status === 'CAUTION'
-                          ? 'bg-yellow-600 text-slate-950'
-                          : 'bg-emerald-950 text-emerald-400 border border-emerald-800'
+                        pg.status === "DANGER"
+                          ? "bg-rose-600 text-white"
+                          : pg.status === "WARNING"
+                            ? "bg-amber-600 text-white"
+                            : pg.status === "CAUTION"
+                              ? "bg-yellow-600 text-slate-950"
+                              : "bg-emerald-950 text-emerald-400 border border-emerald-800"
                       }`}
                     >
                       {pg.status}
                     </span>
                   </div>
-                  <div className="mt-2 text-xs font-mono text-slate-300">{pg.genotype}</div>
-                  <p className="mt-2 text-xs text-slate-300 leading-relaxed">{pg.risk}</p>
+                  <div className="mt-2 text-xs font-mono text-slate-300">
+                    {pg.genotype}
+                  </div>
+                  <p className="mt-2 text-xs text-slate-300 leading-relaxed">
+                    {pg.risk}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {activeTab === 'trials' && (
+        {activeTab === "trials" && (
           <div className="bg-slate-900/90 border border-slate-800 p-6 rounded-xl space-y-4">
             <div className="border-b border-slate-800 pb-3">
               <h2 className="text-lg font-bold text-slate-100 flex items-center space-x-2">
@@ -688,30 +894,42 @@ export default function PrecisionOncologyMolecularHub() {
                 <span>Precision Genomic Clinical Trial Matching Engine</span>
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">
-                Automatically matches patient genomic variants, TMB, and MSI biomarkers against ClinicalTrials.gov NCT registries.
+                Automatically matches patient genomic variants, TMB, and MSI
+                biomarkers against ClinicalTrials.gov NCT registries.
               </p>
             </div>
 
             <div className="space-y-3">
               {patient.trials.map((trial, idx) => (
-                <div key={idx} className="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div
+                  key={idx}
+                  className="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+                >
                   <div>
                     <div className="flex items-center space-x-2">
                       <span className="font-mono text-xs font-bold text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-800">
                         {trial.id}
                       </span>
-                      <span className="text-xs font-semibold text-slate-400">{trial.phase}</span>
+                      <span className="text-xs font-semibold text-slate-400">
+                        {trial.phase}
+                      </span>
                       <span className="text-xs font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
                         Biomarker Match: {trial.matchScore}
                       </span>
                     </div>
-                    <h4 className="text-sm font-bold text-slate-100 mt-1.5">{trial.title}</h4>
+                    <h4 className="text-sm font-bold text-slate-100 mt-1.5">
+                      {trial.title}
+                    </h4>
                     <p className="text-xs text-slate-400 mt-1">
-                      Inclusion Criteria: Stage IV solid tumors harboring {patient.alterations.map(a => a.gene).join(' or ')} alteration with prior progression.
+                      Inclusion Criteria: Stage IV solid tumors harboring{" "}
+                      {patient.alterations.map((a) => a.gene).join(" or ")}{" "}
+                      alteration with prior progression.
                     </p>
                   </div>
                   <button
-                    onClick={() => alert(`Pre-screening dossier generated for ${trial.id}`)}
+                    onClick={() =>
+                      alert(`Pre-screening dossier generated for ${trial.id}`)
+                    }
                     className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold whitespace-nowrap transition"
                   >
                     Generate Pre-Screening Packet
@@ -722,15 +940,18 @@ export default function PrecisionOncologyMolecularHub() {
           </div>
         )}
 
-        {activeTab === 'fhir' && (
+        {activeTab === "fhir" && (
           <div className="bg-slate-900/90 border border-slate-800 p-6 rounded-xl space-y-4">
             <div className="border-b border-slate-800 pb-3">
               <h2 className="text-lg font-bold text-slate-100 flex items-center space-x-2">
                 <FileText className="w-5 h-5 text-indigo-400" />
-                <span>HL7 FHIR R4 DiagnosticReport & Audit Ledger (21 CFR Part 11)</span>
+                <span>
+                  HL7 FHIR R4 DiagnosticReport & Audit Ledger (21 CFR Part 11)
+                </span>
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">
-                Standardized interoperability resource payload for electronic health record (EHR) ingestion and tamper-evident audit logging.
+                Standardized interoperability resource payload for electronic
+                health record (EHR) ingestion and tamper-evident audit logging.
               </p>
             </div>
 
@@ -738,34 +959,48 @@ export default function PrecisionOncologyMolecularHub() {
               <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-800 text-xs font-bold text-slate-300">
                   <span>FHIR R4 MolecularSequence JSON Payload</span>
-                  <Download className="w-4 h-4 text-cyan-400 cursor-pointer" onClick={() => alert("FHIR JSON Exported.")} />
+                  <Download
+                    className="w-4 h-4 text-cyan-400 cursor-pointer"
+                    onClick={() => alert("FHIR JSON Exported.")}
+                  />
                 </div>
                 <pre className="mt-3 p-3 bg-slate-900 rounded-lg text-slate-300 text-xs font-mono overflow-x-auto max-h-64">
-{JSON.stringify({
-  resourceType: "DiagnosticReport",
-  id: `dr-onc-${patient.id.toLowerCase()}`,
-  status: "final",
-  category: [{
-    coding: [{
-      system: "http://terminology.hl7.org/CodeSystem/v2-0074",
-      code: "GE",
-      display: "Genetics"
-    }]
-  }],
-  code: {
-    coding: [{
-      system: "http://loinc.org",
-      code: "69548-6",
-      display: "Genetic variant assessment"
-    }]
-  },
-  subject: {
-    reference: `Patient/${patient.id}`,
-    display: patient.name
-  },
-  effectiveDateTime: new Date().toISOString(),
-  conclusion: `Actionable biomarkers: ${patient.alterations.map(a => `${a.gene} ${a.variant}`).join(', ')}. TMB: ${patient.tmbScore} mut/Mb. MSI: ${patient.msiStatus}.`
-}, null, 2)}
+                  {JSON.stringify(
+                    {
+                      resourceType: "DiagnosticReport",
+                      id: `dr-onc-${patient.id.toLowerCase()}`,
+                      status: "final",
+                      category: [
+                        {
+                          coding: [
+                            {
+                              system:
+                                "http://terminology.hl7.org/CodeSystem/v2-0074",
+                              code: "GE",
+                              display: "Genetics",
+                            },
+                          ],
+                        },
+                      ],
+                      code: {
+                        coding: [
+                          {
+                            system: "http://loinc.org",
+                            code: "69548-6",
+                            display: "Genetic variant assessment",
+                          },
+                        ],
+                      },
+                      subject: {
+                        reference: `Patient/${patient.id}`,
+                        display: patient.name,
+                      },
+                      effectiveDateTime: new Date().toISOString(),
+                      conclusion: `Actionable biomarkers: ${patient.alterations.map((a) => `${a.gene} ${a.variant}`).join(", ")}. TMB: ${patient.tmbScore} mut/Mb. MSI: ${patient.msiStatus}.`,
+                    },
+                    null,
+                    2,
+                  )}
                 </pre>
               </div>
 
@@ -776,10 +1011,17 @@ export default function PrecisionOncologyMolecularHub() {
                   </div>
                   <div className="mt-3 space-y-2 max-h-60 overflow-y-auto">
                     {auditLog.map((log, i) => (
-                      <div key={i} className="p-2.5 rounded bg-slate-900/80 border border-slate-800 text-xs">
+                      <div
+                        key={i}
+                        className="p-2.5 rounded bg-slate-900/80 border border-slate-800 text-xs"
+                      >
                         <div className="flex items-center justify-between text-slate-400">
-                          <span className="font-mono text-cyan-400">{log.time}</span>
-                          <span className="text-slate-300 font-semibold">{log.user}</span>
+                          <span className="font-mono text-cyan-400">
+                            {log.time}
+                          </span>
+                          <span className="text-slate-300 font-semibold">
+                            {log.user}
+                          </span>
                         </div>
                         <p className="text-slate-200 mt-1">{log.action}</p>
                       </div>
@@ -790,11 +1032,19 @@ export default function PrecisionOncologyMolecularHub() {
                 <div className="pt-3 border-t border-slate-800">
                   <button
                     onClick={() => {
-                      const signer = prompt("Enter Digital Signature Credentials (MD License / ID):", "DR-CHEN-88912");
+                      const signer = prompt(
+                        "Enter Digital Signature Credentials (MD License / ID):",
+                        "DR-CHEN-88912",
+                      );
                       if (signer) {
-                        setAuditLog(prev => [
-                          { time: new Date().toLocaleTimeString(), user: signer, action: "Digital Signature Affixed (21 CFR Part 11 Compliant SHA-256)" },
-                          ...prev
+                        setAuditLog((prev) => [
+                          {
+                            time: new Date().toLocaleTimeString(),
+                            user: signer,
+                            action:
+                              "Digital Signature Affixed (21 CFR Part 11 Compliant SHA-256)",
+                          },
+                          ...prev,
                         ]);
                         alert("Report Signed and Sealed Cryptographically.");
                       }

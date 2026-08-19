@@ -1,15 +1,67 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
-  Activity, AlertOctagon, AlertTriangle, ArrowDownRight, ArrowUpRight, Battery,
-  Bell, CheckCircle2, ChevronRight, Clock, Cpu, Download, Droplets, Eye, FileText,
-  Filter, Flame, Gauge, Heart, HeartPulse, HelpCircle, Info, Layers, Lock,
-  Monitor, Pause, Play, Plus, Power, Radio, RefreshCw, RotateCcw, Search,
-  ShieldAlert, ShieldCheck, Siren, Sliders, SlidersHorizontal, Sparkles,
-  Stethoscope, Thermometer, Timer, TrendingDown, TrendingUp, User, Users, Waves,
-  Wind, X, Zap,
+  Activity,
+  AlertOctagon,
+  AlertTriangle,
+  ArrowDownRight,
+  ArrowUpRight,
+  Battery,
+  Bell,
+  CheckCircle2,
+  ChevronRight,
+  Clock,
+  Cpu,
+  Download,
+  Droplets,
+  Eye,
+  FileText,
+  Filter,
+  Flame,
+  Gauge,
+  Heart,
+  HeartPulse,
+  HelpCircle,
+  Info,
+  Layers,
+  Lock,
+  Monitor,
+  Pause,
+  Play,
+  Plus,
+  Power,
+  Radio,
+  RefreshCw,
+  RotateCcw,
+  Search,
+  ShieldAlert,
+  ShieldCheck,
+  Siren,
+  Sliders,
+  SlidersHorizontal,
+  Sparkles,
+  Stethoscope,
+  Thermometer,
+  Timer,
+  TrendingDown,
+  TrendingUp,
+  User,
+  Users,
+  Waves,
+  Wind,
+  X,
+  Zap,
 } from "lucide-react";
 import { downloadCsv } from "../../utils/csv";
-import { useKindToasts, KindToastTray } from "../../components/common/HubToasts";
+import {
+  useKindToasts,
+  KindToastTray,
+} from "../../components/common/HubToasts";
 
 /* ------------------------------------------------------------------ */
 /*  Clinical Seed Data & Presets (KDIGO CRRT Telemetry)                */
@@ -50,8 +102,18 @@ const INITIAL_CRRT_PATIENTS = [
     lactate: 3.4,
     status: "Active Filtration",
     alerts: [
-      { id: "alt-1", type: "warning", msg: "TMP rising: +25 mmHg over last 2h (Fibrin layering)", time: "6m ago" },
-      { id: "alt-2", type: "info", msg: "Effluent dose target 30 mL/kg/h maintained", time: "18m ago" },
+      {
+        id: "alt-1",
+        type: "warning",
+        msg: "TMP rising: +25 mmHg over last 2h (Fibrin layering)",
+        time: "6m ago",
+      },
+      {
+        id: "alt-2",
+        type: "info",
+        msg: "Effluent dose target 30 mL/kg/h maintained",
+        time: "18m ago",
+      },
     ],
   },
   {
@@ -88,7 +150,12 @@ const INITIAL_CRRT_PATIENTS = [
     lactate: 2.1,
     status: "Stable Fluid Removal",
     alerts: [
-      { id: "alt-3", type: "info", msg: "Negative fluid balance goal 2.5L/24h on track", time: "12m ago" },
+      {
+        id: "alt-3",
+        type: "info",
+        msg: "Negative fluid balance goal 2.5L/24h on track",
+        time: "12m ago",
+      },
     ],
   },
   {
@@ -125,8 +192,18 @@ const INITIAL_CRRT_PATIENTS = [
     lactate: 4.8,
     status: "High Transmembrane Pressure",
     alerts: [
-      { id: "alt-4", type: "critical", msg: "TMP > 200 mmHg (215 mmHg) - High Filter Coagulation Risk", time: "2m ago" },
-      { id: "alt-5", type: "critical", msg: "Severe Acidemia / Serum K+ 6.8 mEq/L", time: "5m ago" },
+      {
+        id: "alt-4",
+        type: "critical",
+        msg: "TMP > 200 mmHg (215 mmHg) - High Filter Coagulation Risk",
+        time: "2m ago",
+      },
+      {
+        id: "alt-5",
+        type: "critical",
+        msg: "Severe Acidemia / Serum K+ 6.8 mEq/L",
+        time: "5m ago",
+      },
     ],
   },
   {
@@ -154,7 +231,7 @@ const INITIAL_CRRT_PATIENTS = [
     effluentDose: 35.8,
     citrateRate: 170,
     calciumInfusion: 32,
-    postFilterIca: 0.30,
+    postFilterIca: 0.3,
     systemicIca: 1.25,
     serumCreatinine: 2.9,
     bun: 51,
@@ -163,15 +240,29 @@ const INITIAL_CRRT_PATIENTS = [
     lactate: 1.6,
     status: "Weaning Assessment",
     alerts: [
-      { id: "alt-6", type: "info", msg: "Spontaneous urine output increasing: 35 mL/hr", time: "30m ago" },
+      {
+        id: "alt-6",
+        type: "info",
+        msg: "Spontaneous urine output increasing: 35 mL/hr",
+        time: "30m ago",
+      },
     ],
   },
 ];
 
 const KDIGO_BADGES = {
-  "Stage 1": { label: "KDIGO 1", cls: "bg-slate-500/20 text-slate-300 border-slate-500/40" },
-  "Stage 2": { label: "KDIGO 2", cls: "bg-amber-500/20 text-amber-300 border-amber-500/40" },
-  "Stage 3": { label: "KDIGO 3", cls: "bg-rose-500/20 text-rose-300 border-rose-500/40 animate-pulse" },
+  "Stage 1": {
+    label: "KDIGO 1",
+    cls: "bg-slate-500/20 text-slate-300 border-slate-500/40",
+  },
+  "Stage 2": {
+    label: "KDIGO 2",
+    cls: "bg-amber-500/20 text-amber-300 border-amber-500/40",
+  },
+  "Stage 3": {
+    label: "KDIGO 3",
+    cls: "bg-rose-500/20 text-rose-300 border-rose-500/40 animate-pulse",
+  },
 };
 
 function calcTotalEffluent(qd, repPre, repPost, netUfr) {
@@ -184,7 +275,7 @@ function calcEffluentDose(totalEffluent, weightKg) {
 }
 
 function calcFiltrationFraction(repPre, netUfr, qb) {
-  const plasmaFlowPerHour = qb * 60 * 0.70;
+  const plasmaFlowPerHour = qb * 60 * 0.7;
   if (plasmaFlowPerHour <= 0) return 0;
   return Number((((repPre + netUfr) / plasmaFlowPerHour) * 100).toFixed(1));
 }
@@ -220,7 +311,7 @@ export default function NephrologyCrrtStationPage() {
       activePatient.dialysateQd,
       activePatient.replacementPre,
       activePatient.replacementPost,
-      activePatient.netUfrTarget
+      activePatient.netUfrTarget,
     );
   }, [activePatient]);
 
@@ -232,7 +323,7 @@ export default function NephrologyCrrtStationPage() {
     return calcFiltrationFraction(
       activePatient.replacementPre,
       activePatient.netUfrTarget,
-      activePatient.bloodFlowQb
+      activePatient.bloodFlowQb,
     );
   }, [activePatient]);
 
@@ -252,7 +343,7 @@ export default function NephrologyCrrtStationPage() {
             pVenous: Math.max(30, Math.min(180, pt.pVenous + pVenousJitter)),
             tmp: Math.max(60, Math.min(280, pt.tmp + tmpJitter)),
           };
-        })
+        }),
       );
     }, 2500);
 
@@ -348,7 +439,7 @@ export default function NephrologyCrrtStationPage() {
           Number(editParams.dialysateQd),
           Number(editParams.replacementPre),
           Number(editParams.replacementPost),
-          Number(editParams.netUfrTarget)
+          Number(editParams.netUfrTarget),
         );
         const newEffluentDose = calcEffluentDose(newTotalEffluent, p.weightKg);
 
@@ -364,20 +455,28 @@ export default function NephrologyCrrtStationPage() {
           calciumInfusion: Number(editParams.calciumInfusion),
           effluentDose: newEffluentDose,
         };
-      })
+      }),
     );
     pushToast("success", `CRRT Prescription updated for ${modalPatient.name}.`);
     setActiveModal(null);
   };
 
   const triggerProtocol = (protocolName) => {
-    pushToast("error", `🚨 EMERGENCY PROTOCOL: ${protocolName} executed on ${activePatient.name}.`);
+    pushToast(
+      "error",
+      `🚨 EMERGENCY PROTOCOL: ${protocolName} executed on ${activePatient.name}.`,
+    );
     setActiveModal(null);
   };
 
   const handleExportCsv = () => {
     const exportData = patients.map((p) => {
-      const totEff = calcTotalEffluent(p.dialysateQd, p.replacementPre, p.replacementPost, p.netUfrTarget);
+      const totEff = calcTotalEffluent(
+        p.dialysateQd,
+        p.replacementPre,
+        p.replacementPost,
+        p.netUfrTarget,
+      );
       return {
         Patient_ID: p.id,
         Name: p.name,
@@ -436,7 +535,8 @@ export default function NephrologyCrrtStationPage() {
                 </span>
               </div>
               <p className="text-xs text-slate-400 sm:text-sm mt-0.5">
-                Continuous Renal Replacement Therapy • Regional Citrate Anticoagulation (RCA) • TMP & Filter Surveillance
+                Continuous Renal Replacement Therapy • Regional Citrate
+                Anticoagulation (RCA) • TMP & Filter Surveillance
               </p>
             </div>
           </div>
@@ -445,3 +545,424 @@ export default function NephrologyCrrtStationPage() {
         <div className="flex flex-wrap items-center gap-2.5">
           <button
             type="button"
+            onClick={() => setIsLiveSimulating(!isLiveSimulating)}
+            className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-medium border transition-all ${
+              isLiveSimulating
+                ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20"
+                : "bg-amber-500/10 text-amber-400 border-amber-500/30 hover:bg-amber-500/20"
+            }`}
+          >
+            {isLiveSimulating ? (
+              <>
+                <Pause className="h-3.5 w-3.5" /> Live Telemetry Streaming
+              </>
+            ) : (
+              <>
+                <Play className="h-3.5 w-3.5" /> Simulation Paused
+              </>
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleExportCsv}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 border border-slate-700 px-3.5 py-2 text-xs font-medium text-slate-200 hover:bg-slate-800 transition-colors shadow-sm"
+          >
+            <Download className="h-3.5 w-3.5 text-slate-400" /> Export Telemetry
+            CSV
+          </button>
+        </div>
+      </header>
+
+      {/* Main Grid */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        {/* Left Side: Patient Roster */}
+        <div className="lg:col-span-4 space-y-4">
+          <div className="rounded-xl bg-slate-900 border border-slate-800 p-4">
+            <h2 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+              <Users className="h-4 w-4 text-cyan-400" /> Monitored Roster
+            </h2>
+
+            {/* Search */}
+            <div className="relative mb-4">
+              <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-500" />
+              <input
+                type="text"
+                placeholder="Search patient..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full rounded-lg bg-slate-950 border border-slate-800 pl-9 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none"
+              />
+            </div>
+
+            {/* Filter by Mode */}
+            <div className="flex gap-2 text-xs mb-4">
+              {["ALL", "CVVHDF", "CVVH", "CVVHD"].map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => setFilterMode(mode)}
+                  className={`flex-1 rounded py-1 border transition-all ${
+                    filterMode === mode
+                      ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/40"
+                      : "bg-slate-950 text-slate-400 hover:text-slate-200 border-slate-800"
+                  }`}
+                >
+                  {mode}
+                </button>
+              ))}
+            </div>
+
+            {/* Patients List */}
+            <div className="space-y-2.5 max-h-[500px] overflow-y-auto">
+              {filteredPatients.map((pt) => {
+                const isSelected = pt.id === activePatient.id;
+                return (
+                  <div
+                    key={pt.id}
+                    onClick={() => setSelectedId(pt.id)}
+                    className={`cursor-pointer rounded-lg p-3 border transition-all ${
+                      isSelected
+                        ? "bg-slate-800/90 border-cyan-500/60"
+                        : "bg-slate-950/60 border-slate-800/80 hover:bg-slate-800/40"
+                    }`}
+                  >
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <span className="text-sm font-semibold text-white">
+                          {pt.name}
+                        </span>
+                        <p className="text-xs text-slate-400">
+                          {pt.mrn} • {pt.crrtMode}
+                        </p>
+                      </div>
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${KDIGO_BADGES[pt.kdigoStage]?.cls || ""}`}
+                      >
+                        {pt.kdigoStage}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Deep Telemetry */}
+        <div className="lg:col-span-8 space-y-6">
+          <div className="rounded-xl bg-slate-900 border border-slate-800 p-5">
+            <div className="flex justify-between items-start border-b border-slate-800 pb-4 mb-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-white">
+                    {activePatient.name}
+                  </h2>
+                  <span className="text-xs font-mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
+                    {activePatient.id} • {activePatient.mrn}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 mt-1">
+                  {activePatient.diagnosis}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleOpenTitrate(activePatient)}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 text-xs font-medium border border-slate-700"
+              >
+                <Sliders className="h-3.5 w-3.5 text-cyan-400" /> Titrate
+                Parameters
+              </button>
+            </div>
+
+            {/* Waveform Canvas */}
+            <div className="mb-4">
+              <span className="text-xs text-slate-400 block mb-1">
+                Hemodynamic Waveform
+              </span>
+              <canvas
+                ref={canvasRef}
+                width={680}
+                height={100}
+                className="w-full h-[100px] bg-slate-950 rounded-lg border border-slate-800"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                <span className="text-[10px] text-slate-500 uppercase font-semibold">
+                  Effluent Dose
+                </span>
+                <div className="text-lg font-bold text-white font-mono">
+                  {effluentDose} mL/kg/h
+                </div>
+              </div>
+              <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                <span className="text-[10px] text-slate-500 uppercase font-semibold">
+                  Filtration Fraction
+                </span>
+                <div className="text-lg font-bold text-white font-mono">
+                  {filtrationFraction}%
+                </div>
+              </div>
+              <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                <span className="text-[10px] text-slate-500 uppercase font-semibold">
+                  TMP
+                </span>
+                <div className="text-lg font-bold text-white font-mono">
+                  {activePatient.tmp} mmHg
+                </div>
+              </div>
+              <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                <span className="text-[10px] text-slate-500 uppercase font-semibold">
+                  Blood Flow Qb
+                </span>
+                <div className="text-lg font-bold text-white font-mono">
+                  {activePatient.bloodFlowQb} mL/min
+                </div>
+              </div>
+            </div>
+
+            {/* Detailed Parameters */}
+            <div className="mt-6 border-t border-slate-800 pt-6">
+              <h3 className="text-sm font-semibold text-white mb-4">
+                CRRT Prescription Details
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                <div>
+                  <span className="text-slate-500 block">
+                    Dialysate Flow (Qd)
+                  </span>
+                  <span className="font-semibold text-slate-200">
+                    {activePatient.dialysateQd} mL/h
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block">
+                    Pre-Filter Replacement
+                  </span>
+                  <span className="font-semibold text-slate-200">
+                    {activePatient.replacementPre} mL/h
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block">
+                    Post-Filter Replacement
+                  </span>
+                  <span className="font-semibold text-slate-200">
+                    {activePatient.replacementPost} mL/h
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block">Net UF Target</span>
+                  <span className="font-semibold text-slate-200">
+                    {activePatient.netUfrTarget} mL/h
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block">Citrate ACDA</span>
+                  <span className="font-semibold text-slate-200">
+                    {activePatient.citrateRate} mL/h
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block">Calcium Infusion</span>
+                  <span className="font-semibold text-slate-200">
+                    {activePatient.calciumInfusion} mL/h
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block">Access Site</span>
+                  <span className="font-semibold text-slate-200 truncate block">
+                    {activePatient.accessSite}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block">Systemic iCa</span>
+                  <span className="font-semibold text-slate-200">
+                    {activePatient.systemicIca} mmol/L
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Alerts Section */}
+            {activePatient.alerts.length > 0 && (
+              <div className="mt-6 border-t border-slate-800 pt-6">
+                <h3 className="text-sm font-semibold text-white mb-3">
+                  Active Alerts
+                </h3>
+                <div className="space-y-2">
+                  {activePatient.alerts.map((alert) => (
+                    <div
+                      key={alert.id}
+                      className={`flex items-start gap-2.5 rounded-lg p-3 border text-xs ${
+                        alert.type === "critical"
+                          ? "bg-rose-500/10 text-rose-300 border-rose-500/20"
+                          : alert.type === "warning"
+                            ? "bg-amber-500/10 text-amber-300 border-amber-500/20"
+                            : "bg-slate-950 text-slate-300 border-slate-800"
+                      }`}
+                    >
+                      <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="font-medium">{alert.msg}</p>
+                        <span className="text-[10px] text-slate-500 block mt-0.5">
+                          {alert.time}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Titrate Modal */}
+      {activeModal === "TITRATE_CRRT" && modalPatient && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+          <div className="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl space-y-4">
+            <h3 className="text-lg font-bold text-white">
+              Titrate CRRT Prescription - {modalPatient.name}
+            </h3>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs text-slate-400">
+                  Blood Flow (Qb) (mL/min)
+                </label>
+                <input
+                  type="number"
+                  value={editParams.bloodFlowQb}
+                  onChange={(e) =>
+                    setEditParams({
+                      ...editParams,
+                      bloodFlowQb: Number(e.target.value),
+                    })
+                  }
+                  className="w-full rounded bg-slate-950 border border-slate-800 p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-slate-400">
+                  Dialysate Flow (Qd) (mL/h)
+                </label>
+                <input
+                  type="number"
+                  value={editParams.dialysateQd}
+                  onChange={(e) =>
+                    setEditParams({
+                      ...editParams,
+                      dialysateQd: Number(e.target.value),
+                    })
+                  }
+                  className="w-full rounded bg-slate-950 border border-slate-800 p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-slate-400">
+                  Pre-Filter Replacement (mL/h)
+                </label>
+                <input
+                  type="number"
+                  value={editParams.replacementPre}
+                  onChange={(e) =>
+                    setEditParams({
+                      ...editParams,
+                      replacementPre: Number(e.target.value),
+                    })
+                  }
+                  className="w-full rounded bg-slate-950 border border-slate-800 p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-slate-400">
+                  Post-Filter Replacement (mL/h)
+                </label>
+                <input
+                  type="number"
+                  value={editParams.replacementPost}
+                  onChange={(e) =>
+                    setEditParams({
+                      ...editParams,
+                      replacementPost: Number(e.target.value),
+                    })
+                  }
+                  className="w-full rounded bg-slate-950 border border-slate-800 p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-slate-400">
+                  Net UF Target (mL/h)
+                </label>
+                <input
+                  type="number"
+                  value={editParams.netUfrTarget}
+                  onChange={(e) =>
+                    setEditParams({
+                      ...editParams,
+                      netUfrTarget: Number(e.target.value),
+                    })
+                  }
+                  className="w-full rounded bg-slate-950 border border-slate-800 p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-slate-400">
+                  Citrate ACDA (mL/h)
+                </label>
+                <input
+                  type="number"
+                  value={editParams.citrateRate}
+                  onChange={(e) =>
+                    setEditParams({
+                      ...editParams,
+                      citrateRate: Number(e.target.value),
+                    })
+                  }
+                  className="w-full rounded bg-slate-950 border border-slate-800 p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-slate-400">
+                  Calcium Infusion (mL/h)
+                </label>
+                <input
+                  type="number"
+                  value={editParams.calciumInfusion}
+                  onChange={(e) =>
+                    setEditParams({
+                      ...editParams,
+                      calciumInfusion: Number(e.target.value),
+                    })
+                  }
+                  className="w-full rounded bg-slate-950 border border-slate-800 p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-4">
+              <button
+                type="button"
+                onClick={() => setActiveModal(null)}
+                className="rounded bg-slate-800 px-4 py-2 text-xs font-medium text-slate-300 hover:bg-slate-700"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveTitration}
+                className="rounded bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 text-xs font-bold"
+              >
+                Save Titration
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
